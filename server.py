@@ -6,6 +6,8 @@ from werkzeug.serving import run_with_reloader
 from validate_email import validate_email
 from flask import Flask, render_template, request
 
+import database_helper
+
 PORT = int(5000)
 Socket_dictionary = {}
 
