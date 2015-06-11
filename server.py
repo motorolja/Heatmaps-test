@@ -48,7 +48,7 @@ def close_connection(exception):
 @run_with_reloader
 def run_server():
     print("Starting http_server on port: %s..." % PORT)
-    http_server = WSGIServer(('', PORT), app,backlog=None, spawn='default', log='default', handler_class=WebSocketHandler, environ=None)
+    http_server = WSGIServer(('rasmus-holm.com', PORT), app,backlog=None, spawn='default', log='default', handler_class=WebSocketHandler, environ=None)
     http_server.serve_forever()
     
 if __name__ == '__main__':
