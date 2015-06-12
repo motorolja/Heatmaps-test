@@ -6,13 +6,13 @@ var SignalData = [
 ];
 
 // for handling reloads
-/*
 window.onload = function()
 {
     initialize();
 };
-*/
-function initialize() {
+
+function initialize()
+{
 
     var mapOptions = {
     zoom: 13,
@@ -30,11 +30,13 @@ function initialize() {
   heatmap.setMap(map);
 }
 
-function toggleHeatmap() {
+function toggleHeatmap()
+{
   heatmap.setMap(heatmap.getMap() ? null : map);
 }
 
-function changeGradient() {
+function changeGradient()
+{
   var gradient = [
     'rgba(0, 255, 255, 0)',
     'rgba(0, 255, 255, 1)',
@@ -54,11 +56,13 @@ function changeGradient() {
   heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
-function changeRadius() {
+function changeRadius()
+{
   heatmap.set('radius', heatmap.get('radius') ? null : 20);
 }
 
-function changeOpacity() {
+function changeOpacity()
+{
   heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
 }
 
