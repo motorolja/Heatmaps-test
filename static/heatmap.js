@@ -6,11 +6,12 @@ var SignalData = [
 ];
 
 // for handling reloads
+/*
 window.onload = function()
 {
     initialize();
 };
-
+*/
 function initialize() {
   var mapOptions = {
     zoom: 13,
