@@ -1,9 +1,6 @@
 var map, pointarray, heatmap;
 
-var SignalData = [
-    new google.maps.LatLng(58.3991, 15.5772),
-    new google.maps.LatLng(58.3991, 15.5771)
-];
+var SignalData = [];
 
 // for handling reloads
 window.onload = function()
@@ -47,10 +44,18 @@ function openSocket()
                 ws.send('close');
                 console.log('server said close');
 	    }
-            else if (received_data.message == 'new_data')
+            else if (received_data.message == 'Found data')
             {
                 console.log("Got new entries through websocket with data");
-                for
+                var data = received_data.data;
+                for (var i = 0; i < data.length; ++i)
+                {
+                    console.log('Longitude: ' + data[i][0] + ', Latitude: ' + data[i][1]);
+                    // get longitude and latitude
+                    SignalData.push(new google.maps.LatLng(data[i][0],data[i][1]));
+                }
+                toggleHeatmap();
+                toggleHeatmap();
             }
 	};
     }
@@ -66,13 +71,13 @@ function initialize()
 {
 
     var mapOptions = {
-    zoom: 13,
+    zoom: 14,
     center: new google.maps.LatLng(58.3991, 15.5772),
     mapTypeId: google.maps.MapTypeId.SATELLITE
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-  var pointArray = new google.maps.MVCArray(taxiData);
+  var pointArray = new google.maps.MVCArray(SignalData);
 
   heatmap = new google.maps.visualization.HeatmapLayer({
     data: pointArray

@@ -25,6 +25,12 @@ def persistant_connection():
         ws = request.environ['wsgi.websocket']
         clean_dead_sockets()
         Socket_array.append(ws)
+        
+        result = database_helper.get_all_data()
+        print result[1]
+        print result[2][0][1]
+        ws.send( json.dumps({"success": result[0], "message": result[1], "data": result[2]}))
+        
         close_message = ws.receive()
         Socket_array.remove(ws)
     return ""
@@ -36,7 +42,17 @@ def clean_dead_sockets():
             Socket_array.remove(i)
     return ""
 
-
+# Sends an update to all sockets
+def send_update_all_sockets(data):
+    for i in Socket_array:
+        i.send( json.dumps({"message": "new_data", "data": data}) )
+    return ""
+        
+# Makes sure that the database is properly closed after we are done with it
+@app.teardown_appcontext
+def close_connection(exception):
+    database_helper.close_db()
+        
 @run_with_reloader
 def run_server():
     print("Starting http_server on port: %s..." % PORT)
