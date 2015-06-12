@@ -13,15 +13,14 @@ window.onload = function()
 };
 */
 function initialize() {
-  var mapOptions = {
+
+    var mapOptions = {
     zoom: 13,
     center: new google.maps.LatLng(37.774546, -122.433523),
     mapTypeId: google.maps.MapTypeId.SATELLITE
   };
 
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   var pointArray = new google.maps.MVCArray(taxiData);
 
   heatmap = new google.maps.visualization.HeatmapLayer({
