@@ -8,15 +8,66 @@ var SignalData = [
 // for handling reloads
 window.onload = function()
 {
+    openSocket();
     initialize();
 };
+
+// Opens a websocket for the user
+function openSocket()
+{
+    if ( "WebSocket" in window )
+    {
+        var ws = new WebSocket("ws://" + document.domain + ":5000/persistant_connection");
+	console.log('Created WebSocket');
+	ws.onopen = function()
+	{
+	    console.log('opening a websocket');
+	};
+
+	ws.onerror = function(error)
+	{
+	    console.log('WebSocket Error ' + error);
+	};
+
+	ws.onclose = function() 
+	{  
+	    console.log('WebSocket Closed');
+	};
+	console.log(ws);
+	
+        // receives messages from the server as JSON
+	ws.onmessage = function(evt)
+	{
+	    var received_data = JSON.parse(evt.data);
+            console.log('Server: ' + received_data.message);
+
+            // if terminated message is received from the server we send that we confirm that the message has been received, which in turn closes the socket
+	    if(received_data.message == 'terminate')
+	    {
+                ws.send('close');
+                console.log('server said close');
+	    }
+            else if (received_data.message == 'new_data')
+            {
+                console.log("Got new entries through websocket with data");
+                for
+            }
+	};
+    }
+    else
+    {
+	console.log("Browser does not support HTML5 WebSockets, please download a proper browser!");
+    }
+
+}
+
 
 function initialize()
 {
 
     var mapOptions = {
     zoom: 13,
-    center: new google.maps.LatLng(37.774546, -122.433523),
+    center: new google.maps.LatLng(58.3991, 15.5772),
     mapTypeId: google.maps.MapTypeId.SATELLITE
   };
 
