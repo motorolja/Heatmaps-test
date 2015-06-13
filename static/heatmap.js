@@ -14,7 +14,7 @@ function openSocket()
 {
     if ( "WebSocket" in window )
     {
-        var ws = new WebSocket("ws://" + document.domain + ":5000/persistant_connection");
+        var ws = new WebSocket("ws://" + document.domain + ":80/persistant_connection");
 	console.log('Created WebSocket');
 	ws.onopen = function()
 	{
