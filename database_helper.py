@@ -26,7 +26,7 @@ def close_db():
 
 def get_all_data():
     try:
-        query = '''select device_latitude,device_longitude,device_position_accuracy,timestamp,sim_operator,sim_mcc,sim_mnc,cell_signal_strength_dbm from networkmonitor where sim_state='READY' and device_latitude not NULL'''
+        query = '''select distinct device_latitude,device_longitude,device_position_accuracy,user_id,timestamp,sim_operator,sim_mcc,sim_mnc,cell_signal_strength_dbm from networkmonitor where sim_state='READY' and device_latitude not NULL'''
         cursor = get_db().cursor()
         cursor.execute(query)
         result = cursor.fetchall()
