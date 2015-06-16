@@ -17,8 +17,20 @@ app.debug = True
 def root():
     return render_template('heatmap.html')
 
+# for fetching all data without websocket
+@app.route('/fetch_signal_data')
+def fetch_signal_data():
+	print "in fetch_signal_data()"
+	if request.method == 'GET':
+		print "in GET"
+		result = database_helper.get_all_data()
+		print "Got result"
+		return json.dumps({"success": result[0], "message": result[1], "data": result[2]})
+			
+	return json.dumps({"success": False, "message": "failed", "data": ""})
+
 # For initiating an idle websocket
-@app.route('/persistant_connection')
+@app.route('/persistant_connection', methods=['GET'])
 def persistant_connection():
     print ("in persistant connection")
     if request.environ.get('wsgi.websocket'):
@@ -27,11 +39,14 @@ def persistant_connection():
         Socket_array.append(ws)
         
         result = database_helper.get_all_data()
-        print result[1]
-        print result[2][0][1]
         ws.send( json.dumps({"success": result[0], "message": result[1], "data": result[2]}))
         
-        close_message = ws.receive()
+	while True:
+		message = ws.receive()
+		if message == '--heartbeat--':
+			ws.send( json.dumps({ "success": True, "message": "--heartbeat--", "data": ""}))
+		else:
+			break
         Socket_array.remove(ws)
     return ""
 
