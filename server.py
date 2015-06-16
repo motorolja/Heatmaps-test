@@ -40,13 +40,10 @@ def persistant_connection():
         
         result = database_helper.get_all_data()
         ws.send( json.dumps({"success": result[0], "message": result[1], "data": result[2]}))
-        
-	while True:
-		message = ws.receive()
-		if message == '--heartbeat--':
-			ws.send( json.dumps({ "success": True, "message": "--heartbeat--", "data": ""}))
-		else:
-			break
+       
+        ws.send( json.dumps({"success": True, "message": "terminate", "data": ""}))
+ 	message = ws.receive()
+
         Socket_array.remove(ws)
     return ""
 

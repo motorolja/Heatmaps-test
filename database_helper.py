@@ -30,6 +30,7 @@ def get_all_data():
         cursor = get_db().cursor()
         cursor.execute(query)
         result = cursor.fetchall()
+	cursor.close()
         if result is None:
             return (False, "Failed to find data in database","")
         else:

@@ -58,7 +58,8 @@ function openSocket()
     if ( "WebSocket" in window )
     {
         var ws = new WebSocket("ws://" + document.domain + ":80/persistant_connection");
-	var heartbeat_msg = '--heartbeat--', heartbeat_interval = null, missed_heartbeats = 0;
+//	var heartbeat_msg = '--heartbeat--', heartbeat_interval = null
+	var missed_heartbeats = 0;
 	console.log('Created WebSocket');
 	ws.onopen = function()
 	{
@@ -90,7 +91,8 @@ function openSocket()
 	};
 
 	ws.onclose = function() 
-	{  
+	{ 
+	    ws.send('close'); 
 	    console.log('WebSocket Closed');
 	};
 	console.log(ws);
@@ -102,17 +104,17 @@ function openSocket()
             console.log('Server: ' + received_data.message);
 
             // if terminated message is received from the server we send that we confirm that the message has been received, which in turn closes the socket
-	    if(received_data.message == 'terminate')
+	    if(received_data.message === 'terminate')
 	    {
-                ws.send('close');
+                ws.close();
                 console.log('server said close');
 	    }
-	   else if (received_data.message === heartbeat_msg) 
+	   else if (received_data.message === "--heartbeat--") 
 	    {
         	// reset the counter for missed heartbeats
         	missed_heartbeats = 0;
     	    }
-            else if (received_data.message == 'Found data')
+            else if (received_data.message === 'Found data')
             {
                 console.log("Got new entries through websocket with data");
                 var data = received_data.data;
