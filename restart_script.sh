@@ -5,7 +5,7 @@ FOUND_PROCESSES="$(pgrep python2.7)"
 echo $FOUND_PROCESSES
 
 if [ -z "${FOUND_PROCESSES}" ]; then
-	cd "/var/www/heatmap"
+	cd "/var/www/heatmaps"
 	python2.7 "server.py" &
 fi
 
